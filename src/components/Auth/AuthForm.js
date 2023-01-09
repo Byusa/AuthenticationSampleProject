@@ -72,7 +72,10 @@ const AuthForm = () => {
       })
       .then( (data) => { 
         console.log(data)
-        authCtx.login(data.idToken) // keeping the token to useContext
+        const expirationTime = new Date(
+          new Date().getTime() + (data.expiresIn * 1000)
+        );
+        authCtx.login(data.idToken, expirationTime.toISOString()) // keeping the token to useContext
         history.replace('/') // not allow the user to go back to the previous page
       })
       .catch((err) => {
